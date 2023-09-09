@@ -1,0 +1,67 @@
+﻿@model CalculatorViewModel
+@{
+    ViewData["Title"] = "Kalkulator";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Kalkulator</h1>
+</div>
+
+<div class="container">
+    <form asp-controller="Home" asp-action="Calculate" method="post">
+        <div class="form-group">
+            <label for="FirstNumber">Pierwsza liczba:</label>
+            <input type="text" class="form-control" id="FirstNumber" name="FirstNumber" value="@Model.CalculatorData.FirstNumber" />
+        </div>
+
+        <div class="form-group">
+            <label for="Operation">Operacja:</label>
+            <select class="form-control" id="Operation" name="Operation">
+                <option value="Add">Dodawanie</option>
+                <option value="Subtract">Odejmowanie</option>
+                <option value="Multiply">Mnożenie</option>
+                <option value="Divide">Dzielenie</option>
+                <option value="Factorial">Silnia</option>
+                <option value="Fibonacci">Ciąg Fibonacciego</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="SecondNumber">Druga liczba:</label>
+            <input type="text" class="form-control" id="SecondNumber" name="SecondNumber" value="@Model.CalculatorData.SecondNumber" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Oblicz</button>
+    </form>
+
+    @if (!double.IsNaN(Model.CalculatorData.Result))
+    {
+        <div class="alert alert-success mt-3">
+            Wynik: @Model.CalculatorData.Result
+        </div>
+    }
+<h2>Historia operacji:</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Operacja</th>
+                <th>Pierwsza liczba</th>
+                <th>Druga liczba</th>
+                <th>Wynik</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var operation in Model.OperationHistory)
+            {
+                <tr>
+                    <td>@operation.OperationType</td>
+                    <td>@operation.FirstNumber</td>
+                    <td>@operation.SecondNumber</td>
+                    <td>@operation.Result</td>
+                    <td>@operation.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
